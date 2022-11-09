@@ -3,6 +3,7 @@ import {createConnection, Connection} from "mysql2/promise"
 import {mysqlSetting} from "../config/mysql";
 import {initializeApp, applicationDefault} from "firebase-admin/app";
 import {getAuth} from "firebase-admin/auth";
+import {DefaultAPIResult, SignInResult} from "../Types";
 
 const userRouter: Router = Router()
 
@@ -13,15 +14,17 @@ initializeApp({
 
 type userStatus = 0 | 1 | null
 
-userRouter.post("/signIn", async (req, res) => {
-    console.log("sign in")
+
+// サインイン
+userRouter.post("/", async (req, res) => {
     const authorization = req.header("Authorization")
+
     if (!authorization) {
         res.json({
             ServerError: false,
             ClientError: true,
             ErrorMessage: "Token　Error"
-        })
+        } as DefaultAPIResult)
         return
     }
 
@@ -30,7 +33,6 @@ userRouter.post("/signIn", async (req, res) => {
     const connection: Connection = await createConnection(mysqlSetting)
     try {
         const firebaseUser = await getAuth().verifyIdToken(AccessToken);
-
 
         const CheckExistUserSQL = "select is_deleted from users where firebase_uuid = ?"
         const [CheckExistUserResult,]: any = await connection.query(CheckExistUserSQL, [firebaseUser.uid])
@@ -49,7 +51,7 @@ userRouter.post("/signIn", async (req, res) => {
                 ServerError: false,
                 ClientError: false,
                 UserName: firebaseUser.name
-            })
+            } as SignInResult)
             return
 
         }
@@ -60,7 +62,7 @@ userRouter.post("/signIn", async (req, res) => {
                 ServerError: false,
                 ClientError: false,
                 UserName: firebaseUser.name
-            })
+            } as SignInResult)
             return
         }
         if (user_status == 0) {
@@ -70,16 +72,16 @@ userRouter.post("/signIn", async (req, res) => {
                 ServerError: false,
                 ClientError: false,
                 UserName: SelectUserNameResult[0].user_name
-            })
+            } as SignInResult)
             return
         }
     } catch (error) {
         console.log(error)
-        res.json({
+        res.status(500).json({
             ServerError: true,
             ClientError: false,
-            ErrorMessage: "Server Error"
-        })
+            ErrorMessage: "サーバーエラー"
+        } as DefaultAPIResult)
         return
 
     } finally {
@@ -95,7 +97,7 @@ userRouter.post("/update/name", async (req, res) => {
             ServerError: false,
             ClientError: true,
             ErrorMessage: "Token Error"
-        })
+        } as DefaultAPIResult)
         return
     }
 
@@ -105,7 +107,7 @@ userRouter.post("/update/name", async (req, res) => {
             ServerError: false,
             ClientError: true,
             ErrorMessage: "Data Error"
-        })
+        } as DefaultAPIResult)
         return
     }
     const AccessToken = authorization.split(" ")[1]
@@ -119,15 +121,15 @@ userRouter.post("/update/name", async (req, res) => {
         res.json({
             ServerError: false,
             ClientError: false
-        })
+        } as DefaultAPIResult)
 
     } catch (error) {
         console.log(error)
-        res.json({
+        res.status(500).json({
             ServerError: true,
             ClientError: false,
-            ErrorMessage: "Server Error"
-        })
+            ErrorMessage: "サーバーエラー"
+        } as DefaultAPIResult)
     } finally {
         await connection.end()
     }

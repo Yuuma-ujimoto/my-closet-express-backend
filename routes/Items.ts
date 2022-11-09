@@ -1,5 +1,5 @@
 import {Request, Response, Router} from "express";
-import {AuthTokenResult, DefaultAPIResult, FileUploadData, GetAllItemResult} from "../Types";
+import {AuthTokenResult, DefaultAPIResult, FileUploadData, GetAllItemResult, GetItemStatusResult} from "../Types";
 import {AuthToken} from "../middleware/AuthToken";
 import {Connection, createConnection} from "mysql2/promise";
 import {mysqlSetting} from "../config/mysql";
@@ -19,22 +19,21 @@ router.post("/", async (req, res) => {
 
     const file: FileUploadData = req.files
     if (!file) {
-        const responseBody: DefaultAPIResult = {
+
+        res.json({
             ServerError: false,
             ClientError: true,
             ErrorMessage: "ファイルがありません。"
-        }
-        res.json(responseBody)
+        } as DefaultAPIResult)
         return
     }
     const itemImage = file.itemImage
     if (!itemImage) {
-        const responseBody: DefaultAPIResult = {
+        res.json({
             ServerError: false,
             ClientError: true,
             ErrorMessage: "不明なファイル"
-        }
-        res.json(responseBody)
+        } as DefaultAPIResult)
         return
     }
     const ItemImageData: UploadedFile = Array.isArray(itemImage) ? itemImage[0] : itemImage
@@ -53,12 +52,11 @@ router.post("/", async (req, res) => {
                 // IDが一致すれば上書き
                 insertBlandId = blandId
             } else {
-                const responseBody: DefaultAPIResult = {
+                res.status(403).json({
                     ServerError: false,
                     ClientError: true,
                     ErrorMessage: "不明なブランド"
-                }
-                res.json(responseBody)
+                } as DefaultAPIResult)
                 return
             }
         }
@@ -68,12 +66,11 @@ router.post("/", async (req, res) => {
         const [CheckCtegoryExistResult,]: any = await connection.query(CheckCategoryExistSQL, [categoryId])
         console.log(CheckCtegoryExistResult[0].count)
         if (!CheckCtegoryExistResult[0].count) {
-            const responseBody: DefaultAPIResult = {
+            res.status(403).json({
                 ServerError: false,
                 ClientError: true,
                 ErrorMessage: "存在しないカテゴリー"
-            }
-            res.json(responseBody)
+            } as DefaultAPIResult)
             return
         }
         const ItemImageFilePath = await SaveImage(ItemImageData, "item")
@@ -88,20 +85,18 @@ router.post("/", async (req, res) => {
             insertBlandId,
             itemColor
         ])
-        const responseBody: DefaultAPIResult = {
+        res.json({
             ServerError: false,
             ClientError: false,
-        }
-        res.json(responseBody)
+        } as DefaultAPIResult)
 
     } catch (error) {
         console.log(error)
-        const responseBody: DefaultAPIResult = {
+        res.status(500).json({
             ServerError: true,
             ClientError: false,
             ErrorMessage: "サーバーエラー"
-        }
-        res.status(500).json(responseBody)
+        }as DefaultAPIResult)
     } finally {
         await connection.end()
     }
@@ -123,21 +118,19 @@ router.get("/", async (req: Request, res: Response) => {
 
         const [SelectMyItemResult,]: any = await connection.query(SelectMyItemSQL, [FirebaseUID])
 
-        const responseBody: GetAllItemResult = {
+        res.json({
             ServerError: false,
             ClientError: false,
             ItemList: SelectMyItemResult
-        }
-        res.json(responseBody)
+        }as GetAllItemResult)
 
     } catch (error) {
         console.log(error)
-        const responseBody: DefaultAPIResult = {
+        res.status(500).json( {
             ServerError: true,
             ClientError: false,
             ErrorMessage: "サーバーエラー"
-        }
-        res.status(500).json(responseBody)
+        }as DefaultAPIResult)
     } finally {
         await connection.end()
     }
@@ -153,13 +146,13 @@ router.get("/:itemId", async (req: Request, res: Response) => {
     }
     const {itemId} = req.params
 
-    if (!itemId){
-        const responseBody:DefaultAPIResult = {
-            ServerError:false,
-            ClientError:true,
-            ErrorMessage:"パラメーター不足"
-        }
-        res.json(responseBody)
+    if (!itemId) {
+
+        res.json({
+            ServerError: false,
+            ClientError: true,
+            ErrorMessage: "パラメーター不足"
+        } as DefaultAPIResult)
         return
     }
 
@@ -168,37 +161,33 @@ router.get("/:itemId", async (req: Request, res: Response) => {
         const CheckExistItemSQL = "select count(*) as count from items where user_id = ? and item_id = ? and is_deleted = 0"
         const [CheckExistItemResult,]: any = await connection.query(CheckExistItemSQL)
         if (!CheckExistItemResult[0].count) {
-            const responseBody: DefaultAPIResult = {
+            res.json({
                 ServerError: false,
                 ClientError: true,
                 ErrorMessage: "アイテムが存在しません。"
-            }
-            res.json(responseBody)
+            } as DefaultAPIResult)
             return
         }
 
         const SelectItemInfoSQL =
             "select I.item_id,I.item_name,I.item_image_url,IM.item_memo_text,MC.main_category_name,MC.main_category_id,SC.sub_category_name,SC.sub_category_id from items I inner join subCategories SC on I.item_category_id = SC.sub_category_id inner join mainCategories MC on SC.main_category_id = MC.main_category_id inner join itemMemos IM on I.item_id = IM.item_id where I.item_id = ?"
 
-        const [SelectItemInfoResult,]:any = await connection.query(SelectItemInfoSQL,[itemId])
+        const [SelectItemInfoResult,]: any = await connection.query(SelectItemInfoSQL, [itemId])
 
-        const responseBody = {
-            ServerError:false,
-            ClientError:false,
-            ItemInfo:SelectItemInfoResult
-        }
-        res.json(responseBody)
+        res.json({
+            ServerError: false,
+            ClientError: false,
+            ItemInfo: SelectItemInfoResult
+        } as GetItemStatusResult)
 
     } catch (error) {
-        console.log(error)
-        const responseBody: DefaultAPIResult = {
+        res.status(500).json({
             ServerError: true,
             ClientError: false,
             ErrorMessage: "サーバーエラー"
-        }
-        res.status(500).json(responseBody)
-    }
-    finally {
+        } as DefaultAPIResult)
+
+    } finally {
         await connection.end()
     }
 })
