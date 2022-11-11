@@ -23,7 +23,7 @@ userRouter.post("/", async (req, res) => {
         res.json({
             ServerError: false,
             ClientError: true,
-            ErrorMessage: "Token　Error"
+            ErrorMessage: "認証エラー"
         } as DefaultAPIResult)
         return
     }
@@ -90,13 +90,13 @@ userRouter.post("/", async (req, res) => {
 })
 
 
-userRouter.post("/update/name", async (req, res) => {
+userRouter.put("/", async (req, res) => {
     const authorization = req.header("Authorization")
     if (!authorization) {
         res.json({
             ServerError: false,
             ClientError: true,
-            ErrorMessage: "Token Error"
+            ErrorMessage: "認証エラー"
         } as DefaultAPIResult)
         return
     }
@@ -106,7 +106,7 @@ userRouter.post("/update/name", async (req, res) => {
         res.json({
             ServerError: false,
             ClientError: true,
-            ErrorMessage: "Data Error"
+            ErrorMessage: "パラメーター不足"
         } as DefaultAPIResult)
         return
     }

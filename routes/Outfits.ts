@@ -104,7 +104,7 @@ outfitRouter.get("/:outfitId", async (req, res) => {
         res.json({
             ServerError: false,
             ClientError: true,
-            ErrorMessage: "パラメーターエラー"
+            ErrorMessage: "パラメーター不足"
         } as DefaultAPIResult)
         return
     }

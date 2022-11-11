@@ -1,9 +1,12 @@
 import {FileArray} from "express-fileupload";
 
+// :MEMO: エラーメッセージ用の型を作っておくけど使うかは未定
+type ErrorMessage  = "パラメーター不足"|"サーバーエラー"|"認証エラー"|"ファイルエラー"|"パラメーターに誤りがあります"
+
 export type DefaultAPIResult = {
     ServerError: boolean,
     ClientError: boolean,
-    ErrorMessage?: string
+    ErrorMessage?: ErrorMessage
 }
 
 export type SignInResult = DefaultAPIResult & {

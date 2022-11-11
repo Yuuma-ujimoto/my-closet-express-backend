@@ -9,7 +9,7 @@ export async function AuthToken(req: Request): Promise<AuthTokenResult> {
         return {
             ServerError: false,
             ClientError: false,
-            ErrorMessage: "Token Error"
+            ErrorMessage:"認証エラー"
         }
     }
     const AccessToken = authorization.split(" ")[1]
@@ -25,7 +25,7 @@ export async function AuthToken(req: Request): Promise<AuthTokenResult> {
         return {
             ServerError: true,
             ClientError: false,
-            ErrorMessage: "Server Error"
+            ErrorMessage: "サーバーエラー"
         }
     }
 }

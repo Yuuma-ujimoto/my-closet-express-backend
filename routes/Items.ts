@@ -25,7 +25,7 @@ router.post("/", async (req, res) => {
         res.json({
             ServerError: false,
             ClientError: true,
-            ErrorMessage: "ファイルがありません。"
+            ErrorMessage: "ファイルエラー"
         } as DefaultAPIResult)
         return
     }
@@ -34,7 +34,7 @@ router.post("/", async (req, res) => {
         res.json({
             ServerError: false,
             ClientError: true,
-            ErrorMessage: "不明なファイル"
+            ErrorMessage: "ファイルエラー"
         } as DefaultAPIResult)
         return
     }
@@ -56,7 +56,7 @@ router.post("/", async (req, res) => {
                 res.status(200).json({
                     ServerError: false,
                     ClientError: true,
-                    ErrorMessage: "存在しないブランドです。"
+                    ErrorMessage: "パラメーターに誤りがあります"
                 } as DefaultAPIResult)
                 return
             }
@@ -70,7 +70,7 @@ router.post("/", async (req, res) => {
             res.status(200).json({
                 ServerError: false,
                 ClientError: true,
-                ErrorMessage: "存在しないカテゴリー"
+                ErrorMessage: "パラメーターに誤りがあります"
             } as DefaultAPIResult)
             return
         }
@@ -169,7 +169,7 @@ router.get("/:itemId", async (req: Request, res: Response) => {
             res.json({
                 ServerError: false,
                 ClientError: true,
-                ErrorMessage: "アイテムが存在しません。"
+                ErrorMessage: "パラメーターに誤りがあります"
             } as DefaultAPIResult)
             return
         }
