@@ -20,7 +20,7 @@ outfitRouter.post("/",
         }
         const {itemId = null, outfitName = null, outfitDescription = null} = req.body
         if (!itemId || !outfitName) {
-            res.status(403).json({
+            res.status(200).json({
                 ServerError: false,
                 ClientError: true,
                 ErrorMessage: "パラメーター不足"

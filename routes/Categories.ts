@@ -34,7 +34,7 @@ categoryRouter.get("/", async (req, res) => {
 categoryRouter.get("/:mainCategoryId", async (req, res) => {
     const mainCategoryId = req.params.mainCategoryId
     if (!mainCategoryId) {
-        res.status(403).json({
+        res.status(200).json({
             ServerError: false,
             ClientError: true,
             ErrorMessage: "パラメーター不足"

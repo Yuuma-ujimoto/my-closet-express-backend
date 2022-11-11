@@ -15,9 +15,7 @@ app.use(cors({
 
 app.use((req, res, next) => {
     // request log
-    console.log(req.ip)
     console.log(req.path)
-    console.log(req.files)
     console.log(req.body)
     console.log("-------")
     next()
