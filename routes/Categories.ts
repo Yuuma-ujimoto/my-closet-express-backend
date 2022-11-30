@@ -6,16 +6,35 @@ import {DefaultAPIResult, GetMainCategoryResult, GetSubCategoryResult} from "../
 
 const categoryRouter = Router()
 
-// MainCategoryを取得
+// Get all
 categoryRouter.get("/", async (req, res) => {
     const connection = await createConnection(mysqlSetting)
     try {
         const SelectMainCategorySQL = "select main_category_id, main_category_name from mainCategories where is_deleted = 0"
         const [SelectMainCategoryResult,]: any = await connection.query(SelectMainCategorySQL)
+
+        const SelectSubCategorySQL = "select sub_category_id,sub_category_name,main_category_id from subCategories where is_deleted = 0 order by main_category_id"
+        const [SelectSubCategoryResult,]:any = await connection.query(SelectSubCategorySQL)
+
+        const subCategoryList:any = []
+
+        for (const subCategoryData of SelectSubCategoryResult){
+            const subCategoryListIndex = subCategoryData.main_category_id
+            if (!subCategoryList[subCategoryListIndex]){
+                subCategoryList[subCategoryListIndex] = [subCategoryData]
+            }
+            else {
+                console.log(subCategoryList[subCategoryListIndex])
+                subCategoryList[subCategoryListIndex] = [...subCategoryList[subCategoryListIndex],subCategoryData]
+            }
+        }
+
+
         res.json({
             ServerError: false,
             ClientError: false,
-            MainCategoryList: SelectMainCategoryResult
+            MainCategoryList: SelectMainCategoryResult,
+            SubCategoryList:subCategoryList
         } as GetMainCategoryResult)
     } catch (error) {
         console.log(error)

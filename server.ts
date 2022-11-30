@@ -38,6 +38,8 @@ app.use("/items",itemRouter)
 import outfitRouter from "./routes/Outfits";
 app.use("/outfits",outfitRouter)
 
+import categoryRouter from "./routes/Categories";
+app.use("/categories",categoryRouter)
 
 app.listen(8888, () => {
     console.log("Server Running")

@@ -1,7 +1,7 @@
 import {FileArray} from "express-fileupload";
 
 // :MEMO: エラーメッセージ用の型を作っておくけど使うかは未定　
-type ErrorMessage  = "パラメーター不足"|"サーバーエラー"|"認証エラー"|"ファイルエラー"|"パラメーターに誤りがあります"
+type ErrorMessage  = "パラメーター不足"|"サーバーエラー"|"認証エラー"|"ファイルエラー"|"パラメーターに誤りがあります"|"既に登録済みです"
 
 export type DefaultAPIResult = {
     ServerError: boolean,
@@ -26,7 +26,8 @@ export type GetAllItemResult = DefaultAPIResult & {
 }
 
 export type GetMainCategoryResult = DefaultAPIResult & {
-    MainCategoryList :[]
+    MainCategoryList :[],
+    SubCategoryList:[]
 }
 
 export type GetOutfitListResult = DefaultAPIResult & {

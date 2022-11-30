@@ -1,4 +1,4 @@
-import {Router} from "express";
+import {Request, Response, Router} from "express";
 import {createConnection, Connection} from "mysql2/promise"
 import {mysqlSetting} from "../config/mysql";
 import {initializeApp, applicationDefault} from "firebase-admin/app";
@@ -16,9 +16,10 @@ type userStatus = 0 | 1 | null
 
 
 // サインイン
-userRouter.post("/", async (req, res) => {
+userRouter.post("/", async (req: Request, res: Response) => {
+    console.log("1")
     const authorization = req.header("Authorization")
-
+    console.log(authorization)
     if (!authorization) {
         res.json({
             ServerError: false,
@@ -28,6 +29,7 @@ userRouter.post("/", async (req, res) => {
         return
     }
 
+    console.log("2")
     const AccessToken = authorization.split(" ")[1]
 
     const connection: Connection = await createConnection(mysqlSetting)
@@ -39,7 +41,10 @@ userRouter.post("/", async (req, res) => {
         // 0 -> 既にいる
         // 1 -> 退会済みなので新規作成
         // null -> 新規作成
-        const user_status: userStatus = CheckExistUserResult[0].is_deleted
+        let user_status: userStatus = null
+        if (!!CheckExistUserResult[0]) {
+            user_status = CheckExistUserResult[0].is_deleted
+        }
         console.log(user_status)
 
         if (user_status == null) {
