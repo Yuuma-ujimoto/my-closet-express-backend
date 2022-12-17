@@ -10,10 +10,10 @@ const categoryRouter = Router()
 categoryRouter.get("/", async (req, res) => {
     const connection = await createConnection(mysqlSetting)
     try {
-        const SelectMainCategorySQL = "select main_category_id, main_category_name from mainCategories where is_deleted = 0"
+        const SelectMainCategorySQL = "select main_category_id as category_id, main_category_name as category_name from mainCategories where is_deleted = 0"
         const [SelectMainCategoryResult,]: any = await connection.query(SelectMainCategorySQL)
 
-        const SelectSubCategorySQL = "select sub_category_id,sub_category_name,main_category_id from subCategories where is_deleted = 0 order by main_category_id"
+        const SelectSubCategorySQL = "select sub_category_id as category_id, sub_category_name as category_name, main_category_id from  subCategories where is_deleted = 0 order by main_category_id"
         const [SelectSubCategoryResult,]:any = await connection.query(SelectSubCategorySQL)
 
         const subCategoryList:any = []
@@ -24,7 +24,6 @@ categoryRouter.get("/", async (req, res) => {
                 subCategoryList[subCategoryListIndex] = [subCategoryData]
             }
             else {
-                console.log(subCategoryList[subCategoryListIndex])
                 subCategoryList[subCategoryListIndex] = [...subCategoryList[subCategoryListIndex],subCategoryData]
             }
         }

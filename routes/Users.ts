@@ -17,9 +17,7 @@ type userStatus = 0 | 1 | null
 
 // サインイン
 userRouter.post("/", async (req: Request, res: Response) => {
-    console.log("1")
     const authorization = req.header("Authorization")
-    console.log(authorization)
     if (!authorization) {
         res.json({
             ServerError: false,
@@ -29,7 +27,6 @@ userRouter.post("/", async (req: Request, res: Response) => {
         return
     }
 
-    console.log("2")
     const AccessToken = authorization.split(" ")[1]
 
     const connection: Connection = await createConnection(mysqlSetting)
@@ -45,7 +42,6 @@ userRouter.post("/", async (req: Request, res: Response) => {
         if (!!CheckExistUserResult[0]) {
             user_status = CheckExistUserResult[0].is_deleted
         }
-        console.log(user_status)
 
         if (user_status == null) {
             const InsertUserSQL = "insert into users(firebase_uuid, user_name) value(?,?)"

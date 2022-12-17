@@ -4,14 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="17adfcb6-4d03-43c5-9246-aa7fe1f3fb8f" name="変更" comment="エラーメッセージの統一">
-      <change afterPath="$PROJECT_DIR$/routes/Blands.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/9b3a74c1-dc09-4a1a-9cd7-0608587e2da2.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/9b3a74c1-dc09-4a1a-9cd7-0608587e2da2.xml" afterDir="false" />
+    <list default="true" id="17adfcb6-4d03-43c5-9246-aa7fe1f3fb8f" name="変更" comment="ブランドにお気に入りの概念を追加&#10;アイテム登録時のサジェストに使用予定">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/Types.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routes/Categories.ts" beforeDir="false" afterPath="$PROJECT_DIR$/routes/Categories.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routes/Users.ts" beforeDir="false" afterPath="$PROJECT_DIR$/routes/Users.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server.ts" beforeDir="false" afterPath="$PROJECT_DIR$/server.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -64,7 +60,12 @@
       <workItem from="1667981046178" duration="3644000" />
       <workItem from="1668050067628" duration="19068000" />
       <workItem from="1669257149910" duration="1200000" />
-      <workItem from="1669691554543" duration="4663000" />
+      <workItem from="1669691554543" duration="7710000" />
+      <workItem from="1669961583083" duration="65000" />
+      <workItem from="1670145894020" duration="3887000" />
+      <workItem from="1671164767658" duration="24000" />
+      <workItem from="1671164804113" duration="15000" />
+      <workItem from="1671165465066" duration="1569000" />
     </task>
     <task id="LOCAL-00001" summary="jsonを返す際の処理を簡潔にした。&#10;作りかけのサブカテゴリー情報取得のAPIを作成">
       <created>1667983033807</created>
@@ -94,7 +95,14 @@
       <option name="project" value="LOCAL" />
       <updated>1668148577424</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="ブランドにお気に入りの概念を追加&#10;アイテム登録時のサジェストに使用予定">
+      <created>1669810855621</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1669810855622</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -115,6 +123,7 @@
     <MESSAGE value="jsonを返す際の処理を簡潔にした。&#10;作りかけのサブカテゴリー情報取得のAPIを作成" />
     <MESSAGE value="誤った処理の修正" />
     <MESSAGE value="エラーメッセージの統一" />
-    <option name="LAST_COMMIT_MESSAGE" value="エラーメッセージの統一" />
+    <MESSAGE value="ブランドにお気に入りの概念を追加&#10;アイテム登録時のサジェストに使用予定" />
+    <option name="LAST_COMMIT_MESSAGE" value="ブランドにお気に入りの概念を追加&#10;アイテム登録時のサジェストに使用予定" />
   </component>
 </project>
